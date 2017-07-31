@@ -6,7 +6,7 @@ var botID = process.env.BOT_ID;
 function respond() {
   var request = JSON.parse(this.req.chunks[0]),
   //callback trigger probably shouldn't be in the response...
-      botRegex = /\/swamp/;
+      botRegex = /\@Bo/;
 
   if(request.text && botRegex.test(request.text)) {
     console.log("Regex passed!");
