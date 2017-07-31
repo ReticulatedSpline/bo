@@ -1,5 +1,4 @@
 var HTTPS = require('https');
-var cool = require('cool-ascii-faces');
 
 var botID = process.env.BOT_ID;
 
@@ -9,15 +8,23 @@ function respond() {
       botRegex = /\@Bo/;
 
   if(request.text && botRegex.test(request.text)) {
-    console.log("Regex passed!");
+    console.log("Trigger detected...");
     this.res.writeHead(200);
-    postMessage();
+    postMessage(this.parseRequest(request.text));
     this.res.end();
   } else {
-    console.log("don't care");
-    this.res.writeHead(200);
+    console.log("Untriggered response detected!");
+    this.res.writeHead(500);
     this.res.end();
   }
+}
+
+function parseRequest(String req) {
+  req.includes('about') && return this.buildAbout();
+}
+
+buildAbout() {
+  return new String(__dirname/README.md);
 }
 
 function postMessage() {
