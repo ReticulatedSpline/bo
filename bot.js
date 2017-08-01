@@ -33,7 +33,7 @@ function parseResponse() {
 
 function buildAbout() {
   console.log("about")
-  return fs.readFileSync(__dirname + '\\README.md');
+  return fs.readFileSync(__dirname + '/README.md');
 }
 
 function buildWeather(request) {
