@@ -1,28 +1,47 @@
 var HTTPS = require('https');
+const fs = require('fs');
 
 var botID = process.env.BOT_ID;
 
-function respond() {
+function parseResponse() {
   var request = JSON.parse(this.req.chunks[0]),
   //callback trigger probably shouldn't be in the response...
       botRegex = /\@Bo/;
 
   if(request.text && botRegex.test(request.text)) {
-    console.log("Trigger detected...");
+    console.log("Trigger detected: ");
+    let botResponse = "";
+
+    switch (true) {
+      case (/about|help|who are/.test(request.text)):
+        botResponse = buildAbout();
+        break;
+      case (/weather/.test(request.text)):
+        botResponse = buildWeather();
+        break;
+    }
+
     this.res.writeHead(200);
-    postMessage();
+    postMessage(botResponse);
     this.res.end();
   } else {
-    console.log("Untriggered response detected!");
+    console.log("No trigger detected.");
     this.res.writeHead(200);
     this.res.end();
   }
 }
 
-function postMessage() {
-  var botResponse, options, body, botReq;
+function buildAbout() {
+  console.log("about")
+  return fs.readFileSync(__dirname + '\\README.md');
+}
 
-  botResponse = "Get out me swamp!";
+function buildWeather(request) {
+  let arr = request.split(" ");
+}
+
+function postMessage(botResponse) {
+  var botResponse, options, body, botReq;
 
   options = {
     hostname: 'api.groupme.com',
@@ -41,18 +60,17 @@ function postMessage() {
       if(res.statusCode == 202) {
         //neat
       } else {
-        console.log('rejecting bad status code ' + res.statusCode);
+        console.log('Response code ' + res.statusCode);
       }
   });
 
   botReq.on('error', function(err) {
-    console.log('error posting message '  + JSON.stringify(err));
+    console.log('Error posting message '  + JSON.stringify(err));
   });
   botReq.on('timeout', function(err) {
-    console.log('timeout posting message '  + JSON.stringify(err));
+    console.log('Timeout posting message '  + JSON.stringify(err));
   });
   botReq.end(JSON.stringify(body));
 }
 
-
-exports.respond = respond;
+exports.respond = parseResponse;
