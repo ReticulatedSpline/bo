@@ -12,7 +12,7 @@ router = new director.http.Router({
 });
 
 server = http.createServer(function (req, res) {
-  console.log(request.text);
+  console.log(req.text);
   req.chunks = [];
   req.on('data', function (chunk) {
     req.chunks.push(chunk.toString());
