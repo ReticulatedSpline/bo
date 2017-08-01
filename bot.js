@@ -10,21 +10,13 @@ function respond() {
   if(request.text && botRegex.test(request.text)) {
     console.log("Trigger detected...");
     this.res.writeHead(200);
-    postMessage(this.parseRequest(request.text));
+    postMessage();
     this.res.end();
   } else {
     console.log("Untriggered response detected!");
-    this.res.writeHead(500);
+    this.res.writeHead(200);
     this.res.end();
   }
-}
-
-function parseRequest(req) {
-  //req.includes('about') ? (return this.buildAbout());
-}
-
-function buildAbout() {
-  return new String(__dirname/README.md);
 }
 
 function postMessage() {
