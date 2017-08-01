@@ -37,7 +37,7 @@ function buildAbout() {
 }
 
 function buildWeather(request) {
-  let arr = request.split(" ");
+  var arr = request.split(" ");
 }
 
 function postMessage(botResponse) {
