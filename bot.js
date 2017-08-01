@@ -14,7 +14,7 @@ function respond() {
     this.res.end();
   } else {
     console.log("Untriggered response detected!");
-    this.res.writeHead(500);
+    this.res.writeHead(200);
     this.res.end();
   }
 }
