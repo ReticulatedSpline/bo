@@ -32,8 +32,8 @@ function parseResponse() {
 }
 
 function buildAbout() {
-  console.log("about")
-  return JSON.stringify(fs.readFileSync(__dirname + '/README.md'));
+  console.log("about");
+  return fs.readFileSync(__dirname + '/README.md', 'utf-8');
 }
 
 function buildWeather(request) {
