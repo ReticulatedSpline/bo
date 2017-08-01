@@ -20,10 +20,10 @@ function respond() {
 }
 
 function parseRequest(req) {
-  req.includes('about') && return this.buildAbout();
+  //req.includes('about') ? (return this.buildAbout());
 }
 
-buildAbout() {
+function buildAbout() {
   return new String(__dirname/README.md);
 }
 
