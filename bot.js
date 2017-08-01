@@ -14,12 +14,12 @@ function respond() {
     this.res.end();
   } else {
     console.log("Untriggered response detected!");
-    this.res.writeHead(200);
+    this.res.writeHead(500);
     this.res.end();
   }
 }
 
-function parseRequest(String req) {
+function parseRequest(req) {
   req.includes('about') && return this.buildAbout();
 }
 
