@@ -13,10 +13,10 @@ function parseResponse() {
     var botResponse = "";
 
     switch (true) {
-      case (/\@Bo about|help|[who are]/.test(request.text)):
+      case (/\@Bo(\sabout|help|[who are])/.test(request.text)):
         botResponse = buildAbout();
         break;
-      case (/weather/.test(request.text)):
+      case (/\@Bo weather/.test(request.text)):
         botResponse = buildWeather();
         break;
     }
