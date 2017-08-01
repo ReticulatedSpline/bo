@@ -13,7 +13,7 @@ function parseResponse() {
     var botResponse = "";
 
     switch (true) {
-      case (/about|help|who are/.test(request.text)):
+      case (/\@Bo about|help|[who are]/.test(request.text)):
         botResponse = buildAbout();
         break;
       case (/weather/.test(request.text)):
