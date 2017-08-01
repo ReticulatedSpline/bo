@@ -10,7 +10,7 @@ function parseResponse() {
 
   if(request.text && botRegex.test(request.text)) {
     console.log("Trigger detected: ");
-    let botResponse;
+    var botResponse = "";
 
     switch (true) {
       case (/about|help|who are/.test(request.text)):
