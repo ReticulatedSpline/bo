@@ -14,7 +14,7 @@ function parseResponse() {
   if (request.text &&
     botRegex.test(request.text) &&
     request.sender_type != "bot") {
-    var botResponse = "";
+    var botResponse = "@Ben something went wrong!";
 
     switch (true) {
       case (/source/i.test(request.text)):
@@ -28,10 +28,13 @@ function parseResponse() {
         botResponse = buildCoinFlip();
         break;
       case (/.*number.*between/.test(request.text)):
-        botResponse = setTimeout(() => buildNumPick(request.text), 2000);
+        botResponse = buildNumPick(request.text);
         break;
       case (/weather/.test(request.text)):
-        botResponse = buildWeather(request.text);
+        buildWeather(request.text).then(function(result) {
+          console.log("Thenning...")
+          botResponse = result;
+        });
         break;
       default:
         console.log(e + "basecase");
@@ -82,18 +85,21 @@ function buildWeather(req) {
     state = "mn";
   } else {
     city = city[0];
-    state = state[0];
+    state = state[1];
   }
 
-  console.log("Querying " + city + ", " + state);
+  console.log("Querying " + city + ", " + state + "...");
 
   var query = 'select * from weather.forecast where ' +
     'woeid in (select woeid from geo.places(1) ' +
     'where text="' + city + ', ' + state + '")';
+
   return yql.execp(query, function(err, data) {
     if (err) {
-      resolve("Sorry, but the request failed.");
+      console.log("YQL Error");
+      reject("Sorry, but the request failed.");
     } else {
+      console.log("Data retrieved for " + location);
       var location = data.query.results.channel.location;
       var condition = data.query.results.channel.item.condition;
       resolve('It is ' + condition.text + ' in ' + location.city + ', ' +
@@ -116,7 +122,7 @@ function postMessage(botResponse) {
     "text": botResponse
   };
 
-  console.log('Sending: \'' + botResponse + '\' to ' + botID);
+  console.log('Sending: \'' + botResponse + '\' to ' + botID + "...");
 
   botReq = HTTPS.request(options, function(res) {
     if (res.statusCode == 202) {
