@@ -15,7 +15,7 @@ server = http.createServer(function (req, res) {
   req.chunks = [];
   req.on('data', function (chunk) {
     req.chunks.push(chunk.toString());
-    console.log(req.chunks[0]);
+    console.log("Recieved request: " + req.chunks[0]);
   });
 
   router.dispatch(req, res, function(err) {
