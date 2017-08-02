@@ -7,7 +7,9 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "director": ""
+    "director": "",
+    "request": "^2.81.0",
+    "yqlp": "^0.2.0"
   },
   "engines": {
     "node": "0.10.x"
