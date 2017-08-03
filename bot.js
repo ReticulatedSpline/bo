@@ -33,6 +33,9 @@ function parseResponse() {
       case (/weather/.test(request.text)):
         buildWeather(request.text);
         break;
+      case (/reddit/.test(request.text)):
+        buildReddit(request.text);
+        break;
       default:
         postMessage("My responses are limited. You can see a list of valid" +
           " queries with `@Bo help`.");

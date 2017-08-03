@@ -6,13 +6,23 @@ Groupme recently released a chatbot called 'Zo', and it isn't very useful. I've 
 
 Here's Bo.
 
+## Technical
+
+Bo is build with [Node.js](https://nodejs.org/en/about/), a [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/1.8.5) server-side runtime. The setup is similar to the documentation on GroupMe's [development site.](https://dev.groupme.com/tutorials/bots) He is deployed on a cloud platform called [Heroku.](https://devcenter.heroku.com/)
+
 ## Accepted Queries
 
 You can interact with Bo with his trigger phrase, `@Bo`.
 
 Then, append any of the following words to your query and he will attempt to complete them:
 
-[[Coming soon]]
+help: This menu.
+flip a coin: Heads or tails.
+source: See me nude on github.
+number between <x> <y>: Random int of domain [x, y].
+weather: Conditions in Duluth, MN
+weather in <city>, <state>: Comma required.
+weather forecast: Future conditions.
 
 ## Deployment
 
