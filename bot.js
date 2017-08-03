@@ -1,5 +1,6 @@
 var HTTPS = require('https');
 var weather = require('weather-js');
+var quote = require('forismatic-node')();
 const fs = require('fs');
 
 var botID = process.env.BOT_ID;
@@ -33,8 +34,8 @@ function parseResponse() {
       case (/weather/.test(request.text)):
         buildWeather(request.text);
         break;
-      case (/reddit/.test(request.text)):
-        buildReddit(request.text);
+      case (/quote/.test(request.text)):
+        buildQuote();
         break;
       default:
         postMessage("My responses are limited. You can see a list of valid" +
@@ -108,6 +109,17 @@ function buildWeather(req) {
                      res[0].current.temperature + " degrees.");
        }
      }
+  });
+}
+
+function buildQuote() {
+  quote.getQuote(function (error, quote) {
+    if (!error) {
+      postMessage(quote.quoteText + " -" + quote.quoteAuthor);
+    } else {
+      postMessage("Sorry, but I couldn't fetch a quote.")
+      console.error(error);
+    }
   });
 }
 

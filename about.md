@@ -6,3 +6,4 @@ number between <x> <y>: Random int of domain [x, y].
 weather: Conditions in Duluth, MN
 weather in <city>, <state>: Comma required.
 weather forecast: Future conditions.
+quote: Some inspiration.

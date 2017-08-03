@@ -16,19 +16,21 @@ You can interact with Bo with his trigger phrase, `@Bo`.
 
 Then, append any of the following words to your query and he will attempt to complete them:
 
-`help`: This menu.
+`help | about`: This menu.
 
 `flip a coin`: Heads or tails.
 
 `source`: See me nude on github.
 
-`number between <x> <y>`: Random int of domain [x, y].
+`number between from <x> <y>`: Random int of domain [x, y].
 
 `weather`: Conditions in Duluth, MN
 
 `weather in <city>, <state>`: Comma required.
 
 `weather forecast`: Future conditions.
+
+`quote`: Some inspiration.
 
 ## Deployment
 
