@@ -29,5 +29,5 @@ server.listen(port);
 
 function ping() {
   this.res.writeHead(200);
-  this.res.end("You've reached Bo, but I don't communicate on this website.");
+  this.res.end("You've reached Bo, but I don't communicate on this website. Sorry!");
 }
