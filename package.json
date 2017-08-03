@@ -9,7 +9,7 @@
   "dependencies": {
     "director": "",
     "request": "^2.81.0",
-    "yqlp": "^0.2.0"
+    "weather-js": "^2.0.0"
   },
   "engines": {
     "node": "0.10.x"

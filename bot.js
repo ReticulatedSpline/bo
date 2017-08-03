@@ -1,5 +1,5 @@
 var HTTPS = require('https');
-var yql = require('yqlp');
+var weather = require('weather-js');
 const fs = require('fs');
 
 var botID = process.env.BOT_ID;
@@ -14,41 +14,31 @@ function parseResponse() {
   if (request.text &&
     botRegex.test(request.text) &&
     request.sender_type != "bot") {
-    var botResponse = "@Ben something went wrong!";
+    var botResponse = "Something went wrong!";
 
     switch (true) {
       case (/source/i.test(request.text)):
         console.log(e + "sourcecode");
-        botResponse = sourceLink;
+        postMessage(sourceLink);
         break;
       case (/about|help|(who are)/i.test(request.text)):
-        botResponse = buildAbout();
+        postMessage(buildAbout());
         break;
       case (/flip.*coin/.test(request.text)):
-        botResponse = buildCoinFlip();
+        postMessage(buildCoinFlip());
         break;
-      case (/.*number.*between/.test(request.text)):
-        botResponse = buildNumPick(request.text);
+      case (/.*number.*between|from/.test(request.text)):
+        postMessage(buildNumPick(request.text));
         break;
       case (/weather/.test(request.text)):
-        buildWeather(request.text).then(function(result) {
-          console.log("Thenning...")
-          botResponse = result;
-        });
+        buildWeather(request.text);
         break;
       default:
-        console.log(e + "basecase");
-        botResponse = "My responses are limited. You can see a list of valid" +
-          " queries with `@Bo help`.";
+        postMessage("My responses are limited. You can see a list of valid" +
+          " queries with `@Bo help`.");
     }
-
-    this.res.writeHead(200);
-    postMessage(botResponse);
     this.res.end();
-  } /*else {
-    this.res.writeHead(200);
-    this.res.end();
-  }*/
+  }
 }
 
 function buildAbout() {
@@ -93,18 +83,28 @@ function buildWeather(req) {
   var query = 'select * from weather.forecast where ' +
     'woeid in (select woeid from geo.places(1) ' +
     'where text="' + city + ', ' + state + '")';
-
-  return yql.execp(query, function(err, data) {
-    if (err) {
-      console.log("YQL Error");
-      reject("Sorry, but the request failed.");
-    } else {
-      console.log("Data retrieved for " + location);
-      var location = data.query.results.channel.location;
-      var condition = data.query.results.channel.item.condition;
-      resolve('It is ' + condition.text + ' in ' + location.city + ', ' +
-        location.region + ' and ' + condition.temp + ' degrees.');
-    }
+   weather.find({search: city + ', ' + state, degreeType: 'F'},
+   function(err, res){
+     if (err) {
+       console.log(err);
+       return "Sorry, the request could not be completed";
+     }
+     else {
+       if (req.indexOf('forecast') > -1) {
+         postMessage("It is " + res[0].current.skytext + " and " +
+                     res[0].current.temperature + " degrees." +
+                     " Tomorrow will be " +
+                     res[0].forecast[0].skytextday +
+                     " with a high of " +
+                     res[0].forecast[0].high + " degrees. " +
+                     res[0].forecast[1].day + " will be " +
+                     res[0].forecast[1].skytextday + " and " +
+                     res[0].forecast[1].high + " degrees.");
+       } else {
+         postMessage("It is " + res[0].current.skytext + " and " +
+                     res[0].current.temperature + " degrees.");
+       }
+     }
   });
 }
 
