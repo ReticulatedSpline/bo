@@ -4,7 +4,7 @@ var quote = require('forismatic-node')();
 var cron = require('cron').CronJob;
 var moment = require('moment');
 const fs = require('fs');
-const tZone = -5;
+const tZone = 5;
 
 var botID = process.env.BOT_ID;
 var sourceLink = "https://github.com/ReticulatedSpline/Groupme-Chatbot";
