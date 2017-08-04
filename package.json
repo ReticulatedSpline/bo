@@ -10,6 +10,7 @@
     "cron": "^1.2.1",
     "director": "",
     "forismatic-node": "^1.1.4",
+    "moment": "^2.18.1",
     "request": "^2.81.0",
     "weather-js": "^2.0.0"
   },
