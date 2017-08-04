@@ -7,3 +7,4 @@ weather: Conditions in Duluth, MN
 weather in <city>, <state>: Comma required.
 weather forecast: Future conditions.
 quote: Some inspiration.
+remind me <x> in <y> <z>: y = int, z = minutes|hours|days

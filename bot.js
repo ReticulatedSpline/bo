@@ -1,6 +1,8 @@
 var HTTPS = require('https');
 var weather = require('weather-js');
 var quote = require('forismatic-node')();
+var cron = require('cron').CronJob;
+var moment = require('moment');
 const fs = require('fs');
 
 var botID = process.env.BOT_ID;
@@ -25,17 +27,20 @@ function parseResponse() {
       case (/about|help|(who are)/i.test(request.text)):
         postMessage(buildAbout());
         break;
-      case (/flip.*coin/.test(request.text)):
+      case (/flip.*coin/i.test(request.text)):
         postMessage(buildCoinFlip());
         break;
-      case (/.*number.*between|from/.test(request.text)):
+      case (/.*number.*between|from/i.test(request.text)):
         postMessage(buildNumPick(request.text));
         break;
-      case (/weather/.test(request.text)):
+      case (/weather/i.test(request.text)):
         buildWeather(request.text);
         break;
-      case (/quote/.test(request.text)):
+      case (/quote/i.test(request.text)):
         buildQuote();
+        break;
+      case (/remind\sme/i.test(request.text)):
+        buildReminder(request.text);
         break;
       default:
         postMessage("My responses are limited. You can see a list of valid" +
@@ -74,7 +79,7 @@ function buildWeather(req) {
   var city = req.match(/[a-z]+(?=\,)/);
   var state = req.match(/(?:,\s)(.*)/);
   if (!city || !state) {
-    console.log("Invalid arguments. Defaulting...")
+    console.log("no|invalid arguments. defaulting...")
     city = "duluth";
     state = "mn";
   } else {
@@ -95,15 +100,15 @@ function buildWeather(req) {
      }
      else {
        if (req.indexOf('forecast') > -1) {
-         postMessage("It is " + res[0].current.skytext + " and " +
+         postMessage("It is " + res[0].current.skytext.toLowerCase() + " and " +
                      res[0].current.temperature + " degrees." +
                      " Tomorrow will be " +
-                     res[0].forecast[0].skytextday +
+                     res[0].forecast[2].skytextday.toLowerCase() +
                      " with a high of " +
-                     res[0].forecast[0].high + " degrees. " +
-                     res[0].forecast[1].day + " will be " +
-                     res[0].forecast[1].skytextday + " and " +
-                     res[0].forecast[1].high + " degrees.");
+                     res[0].forecast[2].high + " degrees. " +
+                     res[0].forecast[3].day + " will be " +
+                     res[0].forecast[3].skytextday.toLowerCase() + " and " +
+                     res[0].forecast[3].high + " degrees.");
        } else {
          postMessage("It is " + res[0].current.skytext + " and " +
                      res[0].current.temperature + " degrees.");
@@ -121,6 +126,37 @@ function buildQuote() {
       console.error(error);
     }
   });
+}
+
+function buildReminder(req) {
+  console.log(e + "reminder")
+  req = req.toLowerCase().trim();
+  req = req.replace("@bo", "");
+  var quant = req.match(/\d(?=\s(minutes?|hours?|days?))/)[0];
+  var unit = req.match(/minute|hour|day/)[0];
+  if (quant && unit) {
+    var res = /(?:me\s)(?:to)?(?:that)?(.*)(?=\sin)/g.exec(req)[1];
+    res = "Reminder: " + res;
+
+    console.log("setting cron job for " + quant + " " + unit + "(s) from now.");
+
+    console.log("statement is \'" + res +"\'.");
+
+    var date = moment();
+    date.add(quant, unit);
+
+    console.log(date);
+    postMessage("Okay, I'll remind you on " + date.format("MMM Do, YYYY") +
+                " at " + date.format("h:mma"));
+    var reminder = new cron(date.toDate(), function() {
+      postMessage(res);
+      reminder.stop();
+    }, function () {
+      console.log("ending cron job")
+    }, true, `America/Chicago`);
+  } else {
+    postMessage("Sorry, I couldn't understand that format.")
+  }
 }
 
 function postMessage(botResponse) {
