@@ -4,6 +4,7 @@ var quote = require('forismatic-node')();
 var cron = require('cron').CronJob;
 var moment = require('moment');
 const fs = require('fs');
+const tZone = -5;
 
 var botID = process.env.BOT_ID;
 var sourceLink = "https://github.com/ReticulatedSpline/Groupme-Chatbot";
@@ -100,7 +101,7 @@ function buildWeather(req) {
      }
      else {
        if (req.indexOf('forecast') > -1) {
-         postMessage("It is " + res[0].current.skytext.toLowerCase() + " and " +
+         postMessage("Conditions: " + res[0].current.skytext.toLowerCase() + " and " +
                      res[0].current.temperature + " degrees." +
                      " Tomorrow will be " +
                      res[0].forecast[2].skytextday.toLowerCase() +
@@ -110,7 +111,7 @@ function buildWeather(req) {
                      res[0].forecast[3].skytextday.toLowerCase() + " and " +
                      res[0].forecast[3].high + " degrees.");
        } else {
-         postMessage("It is " + res[0].current.skytext + " and " +
+         postMessage("Conditions: " + res[0].current.skytext + " and " +
                      res[0].current.temperature + " degrees.");
        }
      }
@@ -146,8 +147,8 @@ function buildReminder(req) {
     date.add(quant, unit);
 
     console.log(date);
-    postMessage("Okay, I'll remind you on " + date.format("MMM Do, YYYY") +
-                " at " + date.format("h:mma"));
+    postMessage("Okay, I'll remind you on " + date.zone(tZone)format("MMM Do, YYYY") +
+                " at " + date.zone(tZone)format("h:mma"));
     var reminder = new cron(date.toDate(), function() {
       postMessage(res);
       reminder.stop();
