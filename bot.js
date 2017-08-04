@@ -147,8 +147,8 @@ function buildReminder(req) {
     date.add(quant, unit);
 
     console.log(date);
-    postMessage("Okay, I'll remind you on " + date.zone(tZone)format("MMM Do, YYYY") +
-                " at " + date.zone(tZone)format("h:mma"));
+    postMessage("Okay, I'll remind you on " + date.zone(tZone).format("MMM Do, YYYY") +
+                " at " + date.zone(tZone).format("h:mma"));
     var reminder = new cron(date.toDate(), function() {
       postMessage(res);
       reminder.stop();
