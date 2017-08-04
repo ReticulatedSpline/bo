@@ -153,7 +153,7 @@ function buildReminder(req) {
       reminder.stop();
     }, function () {
       console.log("ending cron job")
-    }, true, `America/Chicago`);
+    }, true, 'America/Chicago');
   } else {
     postMessage("Sorry, I couldn't understand that format.")
   }
