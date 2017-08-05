@@ -84,6 +84,7 @@ function buildNumPick(req) {
 function buildWeather(req) {
   console.log(e + "weather");
   //@Bo weather in duluth, mn
+  req = req.toLowerCase();
   var city = req.match(/[a-z]+(?=\,)/);
   var state = req.match(/(?:,\s)(.*)/);
   if (!city || !state) {
