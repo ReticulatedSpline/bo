@@ -1,3 +1,4 @@
+var request = require('request');
 var HTTPS = require('https');
 var weather = require('weather-js');
 var quote = require('forismatic-node')();
@@ -42,6 +43,8 @@ function parseResponse() {
         break;
       case (/remind\sme/i.test(request.text)):
         buildReminder(request.text);
+      case (/reddit|\/r\//i.test(request.text)):
+        buildReddit(request.text);
         break;
       default:
         postMessage("My responses are limited. You can see a list of valid" +
@@ -93,33 +96,35 @@ function buildWeather(req) {
   var query = 'select * from weather.forecast where ' +
     'woeid in (select woeid from geo.places(1) ' +
     'where text="' + city + ', ' + state + '")';
-   weather.find({search: city + ', ' + state, degreeType: 'F'},
-   function(err, res){
-     if (err) {
-       console.log(err);
-       return "Sorry, the request could not be completed";
-     }
-     else {
-       if (req.indexOf('forecast') > -1) {
-         postMessage("Conditions: " + res[0].current.skytext.toLowerCase() + " and " +
-                     res[0].current.temperature + " degrees." +
-                     " Tomorrow will be " +
-                     res[0].forecast[2].skytextday.toLowerCase() +
-                     " with a high of " +
-                     res[0].forecast[2].high + " degrees. " +
-                     res[0].forecast[3].day + " will be " +
-                     res[0].forecast[3].skytextday.toLowerCase() + " and " +
-                     res[0].forecast[3].high + " degrees.");
-       } else {
-         postMessage("Conditions: " + res[0].current.skytext + " and " +
-                     res[0].current.temperature + " degrees.");
-       }
-     }
-  });
+  weather.find({
+      search: city + ', ' + state,
+      degreeType: 'F'
+    },
+    function(err, res) {
+      if (err) {
+        console.log(err);
+        return "Sorry, the request could not be completed";
+      } else {
+        if (req.indexOf('forecast') > -1) {
+          postMessage("Conditions: " + res[0].current.skytext.toLowerCase() + " and " +
+            res[0].current.temperature + " degrees." +
+            " Tomorrow will be " +
+            res[0].forecast[2].skytextday.toLowerCase() +
+            " with a high of " +
+            res[0].forecast[2].high + " degrees. " +
+            res[0].forecast[3].day + " will be " +
+            res[0].forecast[3].skytextday.toLowerCase() + " and " +
+            res[0].forecast[3].high + " degrees.");
+        } else {
+          postMessage("Conditions: " + res[0].current.skytext + " and " +
+            res[0].current.temperature + " degrees.");
+        }
+      }
+    });
 }
 
 function buildQuote() {
-  quote.getQuote(function (error, quote) {
+  quote.getQuote(function(error, quote) {
     if (!error) {
       postMessage(quote.quoteText + " -" + quote.quoteAuthor);
     } else {
@@ -141,23 +146,60 @@ function buildReminder(req) {
 
     console.log("setting cron job for " + quant + " " + unit + "(s) from now.");
 
-    console.log("statement is \'" + res +"\'.");
+    console.log("statement is \'" + res + "\'.");
 
     var date = moment();
     date.add(quant, unit);
 
     console.log(date);
     postMessage("Okay, I'll remind you on " + date.zone(tZone).format("MMM Do, YYYY") +
-                " at " + date.zone(tZone).format("h:mma"));
+      " at " + date.zone(tZone).format("h:mma"));
     var reminder = new cron(date.toDate(), function() {
       postMessage(res);
       reminder.stop();
-    }, function () {
+    }, function() {
       console.log("ending cron job")
     }, true, 'America/Chicago');
   } else {
     postMessage("Sorry, I couldn't understand that format.")
   }
+}
+
+function buildReddit(req) {
+  req = req.toLowerCase();
+  var url = "http://www.reddit.com";
+  var sub = "";
+
+  if (/\/r\//.test(req)) {
+    sub += req.match(/(?:\/r\/)(\w+)/)[1];
+  } else {
+    sub += "all"
+  }
+
+  url += "/r/" + sub + ".json"
+
+  console.log(e + "reddit " + sub);
+  console.log(url);
+  request(url, function(error, response, body) {
+    if (error) {
+      console.log(error);
+      postMessage("Sorry, something went wrong.");
+    } else {
+
+      var page = JSON.parse(body);
+      var i = 0;
+      while (page.data.children[i].data.stickied) {
+        i = i + 1 ;
+        console.log("stickies: ", i);
+      }
+
+      var post = page.data.children[i].data;
+
+      postMessage("In r/" + sub + ", user \'" + post.author + "\' posted " +
+      (post.is_self ? "text: " : "a link: \'") + post.title + '\'\n' +
+      post.permalink);
+    }
+  });
 }
 
 function postMessage(botResponse) {

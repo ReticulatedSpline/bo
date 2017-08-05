@@ -7,4 +7,6 @@ help: This menu.
 *weather in <city>, <state>: Comma required.
 *weather forecast: Future conditions.
 *quote: Some inspiration.
+*reddit <sub>: top hot post. Defaults to /r/all.
+[only working for y < 10 min]
 *remind me <x> in <y> <z>: y = int, z = minutes|hours|days
