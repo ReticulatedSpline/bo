@@ -6,10 +6,13 @@ var cron = require('cron').CronJob;
 var moment = require('moment');
 const catfact = require('cat-facts');
 const fs = require('fs');
+//send feature requests to this user's DM
+const adminId = 32906498;
+//cloud service Heroku is based in europe, adjust times by tZone hours
 const tZone = 5;
+const botID = process.env.BOT_ID;
+const sourceLink = "https://github.com/ReticulatedSpline/Groupme-Chatbot";
 
-var botID = process.env.BOT_ID;
-var sourceLink = "https://github.com/ReticulatedSpline/Groupme-Chatbot";
 var e = "Trigger detected: ";
 
 function parseResponse() {
@@ -27,7 +30,7 @@ function parseResponse() {
         console.log(e + "sourcecode");
         postMessage(sourceLink);
         break;
-      case (/about|help|(who are)/i.test(request.text)):
+      case (/about|help|(who are)|(who dis)/i.test(request.text)):
         postMessage(buildAbout());
         break;
       case (/flip.*coin/i.test(request.text)):
@@ -49,6 +52,9 @@ function parseResponse() {
         break;
       case (/cat fact|catfact/i.test(request.text)):
         postMessage(catfact.random());
+        break;
+      case (/request/i.test(request.text)):
+        buildRequest(request.text, request.name);
         break;
       default:
         postMessage("My responses are limited. You can see a list of valid" +
@@ -207,6 +213,14 @@ function buildReddit(req) {
   });
 }
 
+function buildRequest(text, fromUser) {
+  console.log(e + "feature request");
+  var req = /(?:request )(.*)/.exec(text)[1];
+  postMessage("Okay " + fromUser + ", I'll pass \'" + req + "\' on to Ben.");
+  req += fromUser + " requests " + req;
+  directMessage(adminId, req);
+}
+
 function postMessage(botResponse) {
   var botResponse, options, body, botReq;
 
@@ -222,6 +236,38 @@ function postMessage(botResponse) {
   };
 
   console.log('Sending: \'' + botResponse + '\' to ' + botID + "...");
+
+  botReq = HTTPS.request(options, function(res) {
+    if (res.statusCode == 202) {
+      console.log('Response code: ' + res.statusCode);
+    } else {
+      console.log('Response code: ' + res.statusCode);
+    }
+  });
+
+  botReq.on('error', function(err) {
+    console.log('Error posting message ' + JSON.stringify(err));
+  });
+  botReq.on('timeout', function(err) {
+    console.log('Timeout posting message ' + JSON.stringify(err));
+  });
+  botReq.end(JSON.stringify(body));
+}
+
+function directMessage(userID, text) {
+  options = {
+    hostname: 'api.groupme.com',
+    path: '/v3/bots/post',
+    method: 'POST'
+  };
+
+  body = {
+  "direct_message": {
+    "source_guid": "GUID",
+    "recipient_id": userID,
+    "text": text,
+    }
+  }
 
   botReq = HTTPS.request(options, function(res) {
     if (res.statusCode == 202) {
