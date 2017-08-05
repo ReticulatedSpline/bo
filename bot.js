@@ -217,7 +217,7 @@ function buildRequest(text, fromUser) {
   console.log(e + "feature request");
   var req = /(?:request )(.*)/.exec(text)[1];
   postMessage("Okay " + fromUser + ", I'll pass \'" + req + "\' on to Ben.");
-  req += fromUser + " requests " + req;
+  req = fromUser + " requests " + req;
   directMessage(adminId, req);
 }
 
@@ -255,6 +255,7 @@ function postMessage(botResponse) {
 }
 
 function directMessage(userID, text) {
+  var botResponse, options, body, botReq;
   options = {
     hostname: 'api.groupme.com',
     path: '/v3/bots/post',
