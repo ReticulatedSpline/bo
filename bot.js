@@ -269,6 +269,8 @@ function directMessage(userID, text) {
     }
   }
 
+    console.log('Sending: \'' + text + '\' to ' + userID + "...");
+
   botReq = HTTPS.request(options, function(res) {
     if (res.statusCode == 202) {
       console.log('Response code: ' + res.statusCode);
