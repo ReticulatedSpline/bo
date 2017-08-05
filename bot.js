@@ -47,6 +47,7 @@ function parseResponse() {
         break;
       case (/remind\sme/i.test(request.text)):
         buildReminder(request.text);
+        break;
       case (/reddit|\/r\//i.test(request.text)):
         buildReddit(request.text);
         break;
@@ -270,8 +271,8 @@ function directMessage(userID, text) {
     }
   }
 
-    console.log('Sending: \'' + text + '\' to ' + userID + "...");
-
+  console.log('Sending: \'' + text + '\' to ' + userID + "...");
+  console.log(body);
   botReq = HTTPS.request(options, function(res) {
     if (res.statusCode == 202) {
       console.log('Response code: ' + res.statusCode);
