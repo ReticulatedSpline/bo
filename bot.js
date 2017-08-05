@@ -4,6 +4,7 @@ var weather = require('weather-js');
 var quote = require('forismatic-node')();
 var cron = require('cron').CronJob;
 var moment = require('moment');
+const catfact = require('cat-facts');
 const fs = require('fs');
 const tZone = 5;
 
@@ -45,6 +46,9 @@ function parseResponse() {
         buildReminder(request.text);
       case (/reddit|\/r\//i.test(request.text)):
         buildReddit(request.text);
+        break;
+      case (/cat fact|catfact/i.test(request.text)):
+        postMessage(catfact.random());
         break;
       default:
         postMessage("My responses are limited. You can see a list of valid" +

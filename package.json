@@ -7,6 +7,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "cat-facts": "^1.0.2",
     "cron": "^1.2.1",
     "director": "",
     "forismatic-node": "^1.1.4",
