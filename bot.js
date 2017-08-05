@@ -7,7 +7,7 @@ var moment = require('moment');
 const catfact = require('cat-facts');
 const fs = require('fs');
 //send feature requests to this user's DM
-const adminId = 32906498;
+const adminId = "32906498";
 //cloud service Heroku is based in europe, adjust times by tZone hours
 const tZone = 5;
 const botID = process.env.BOT_ID;
