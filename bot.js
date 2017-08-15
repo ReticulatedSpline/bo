@@ -6,11 +6,11 @@ var cron = require('cron').CronJob;
 var moment = require('moment');
 const catfact = require('cat-facts');
 const fs = require('fs');
-//send feature requests to this user's DM
+//groupme ID to PM
 const adminId = "32906498";
 //cloud service Heroku is based in europe, adjust times by tZone hours
 const tZone = 5;
-const botID = process.env.BOT_ID;
+const botID = "16c7c3f15c5c2b1ad89f2ff7c8";
 const sourceLink = "https://github.com/ReticulatedSpline/Groupme-Chatbot";
 
 var e = "Trigger detected: ";
