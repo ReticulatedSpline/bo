@@ -8,10 +8,29 @@ const catfact = require('cat-facts');
 const fs = require('fs');
 //groupme ID to PM
 const adminId = "32906498";
-//cloud service Heroku is based in europe, adjust times by tZone hours
+//moment.js timezone offset
 const tZone = 5;
 const botID = "16c7c3f15c5c2b1ad89f2ff7c8";
 const sourceLink = "https://github.com/ReticulatedSpline/Groupme-Chatbot";
+const responses = ["It is certain.",
+                 "It is decidedly so.",
+                 "Without a doubt.",
+                 "Yes, definitely.",
+                 "You may rely on it.",
+                 "As I see it, yes.",
+                 "Most likely.",
+                 "Outlook good.",
+                 "Yes.",
+                 "Signs point to yes.",
+                 "Outlook hazy, try again.",
+                 "Ask again later.",
+                 "Cannot predict now.",
+                 "Concentrate and ask again.",
+                 "Don't count on it.",
+                 "My reply is no.",
+                 "My sources say no.",
+                 "Outlook not good.",
+                 "Very doubtful."]
 
 var e = "Trigger detected: ";
 
@@ -46,7 +65,7 @@ function parseResponse() {
         buildQuote();
         break;
       case (/remind\sme/i.test(request.text)):
-        buildReminder(request.text);
+        buildReminder(request.text, request.name);
         break;
       case (/reddit|\/r\//i.test(request.text)):
         buildReddit(request.text);
@@ -56,6 +75,9 @@ function parseResponse() {
         break;
       case (/request/i.test(request.text)):
         buildRequest(request.text, request.name);
+        break;
+      case (/odds|probability|chances|magic\s8/i.test(request.text)):
+        buildEightBall();
         break;
       default:
         postMessage("My responses are limited. You can see a list of valid" +
@@ -146,7 +168,7 @@ function buildQuote() {
   });
 }
 
-function buildReminder(req) {
+function buildReminder(req, name) {
   console.log(e + "reminder")
   req = req.toLowerCase().trim();
   req = req.replace("@bo", "");
@@ -154,7 +176,7 @@ function buildReminder(req) {
   var unit = req.match(/minute|hour|day/)[0];
   if (quant && unit) {
     var res = /(?:me\s)(?:to)?(?:that)?(.*)(?=\sin)/g.exec(req)[1];
-    res = "Reminder: " + res;
+    res = name + "\'s reminder: " + res;
 
     console.log("setting cron job for " + quant + " " + unit + "(s) from now.");
 
@@ -164,8 +186,8 @@ function buildReminder(req) {
     date.add(quant, unit);
 
     console.log(date);
-    postMessage("Okay, I'll remind you on " + date.zone(tZone).format("MMM Do, YYYY") +
-      " at " + date.zone(tZone).format("h:mma"));
+    postMessage("Okay, I'll remind you on " + date.format("MMM Do, YYYY") +
+      " at " + date.format("h:mma"));
     var reminder = new cron(date.toDate(), function() {
       postMessage(res);
       reminder.stop();
@@ -212,6 +234,11 @@ function buildReddit(req) {
       post.permalink);
     }
   });
+}
+
+function buildEightBall() {
+    console.log(e + "Magic 8");
+    postMessage(responses[Math.floor(Math.random() * 18)]);
 }
 
 function buildRequest(text, fromUser) {
