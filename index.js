@@ -24,6 +24,9 @@ server = http.createServer(function (req, res) {
   });
 });
 
+//start the first cron job for spontanious messages
+bot.spontanious();
+
 port = Number(process.env.PORT || 5000);
 server.listen(port);
 

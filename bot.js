@@ -7,7 +7,7 @@ var moment = require('moment');
 const catfact = require('cat-facts');
 const fs = require('fs');
 //groupme ID to PM
-const adminId = "32906498";
+const adminID = "32906498";
 //moment.js timezone offset
 const tZone = 5;
 const botID = "16c7c3f15c5c2b1ad89f2ff7c8";
@@ -15,19 +15,19 @@ const sourceLink = "https://github.com/ReticulatedSpline/Groupme-Chatbot";
 const responses = ["It is certain.",
                  "It is decidedly so.",
                  "Without a doubt.",
-                 "Yes, definitely.",
+                 "It will definitely happen.",
                  "You may rely on it.",
                  "As I see it, yes.",
                  "Most likely.",
                  "Outlook good.",
-                 "Yes.",
+                 "100% Chance.",
                  "Signs point to yes.",
                  "Outlook hazy, try again.",
                  "Ask again later.",
                  "Cannot predict now.",
                  "Concentrate and ask again.",
                  "Don't count on it.",
-                 "My reply is no.",
+                 "My reply is not likely.",
                  "My sources say no.",
                  "Outlook not good.",
                  "Very doubtful."]
@@ -58,10 +58,10 @@ function parseResponse() {
       case (/.*number.*between|from/i.test(request.text)):
         postMessage(buildNumPick(request.text));
         break;
-      case (/weather/i.test(request.text)):
+      case (/weather|forecast/i.test(request.text)):
         buildWeather(request.text);
         break;
-      case (/quote/i.test(request.text)):
+      case (/quote|inspir/i.test(request.text)):
         buildQuote();
         break;
       case (/remind\sme/i.test(request.text)):
@@ -246,7 +246,7 @@ function buildRequest(text, fromUser) {
   var req = /(?:request )(.*)/.exec(text)[1];
   postMessage("Okay " + fromUser + ", I'll pass \'" + req + "\' on to Ben.");
   req = fromUser + " requests " + req;
-  directMessage(adminId, req);
+  directMessage(adminID, req);
 }
 
 function postMessage(botResponse) {
@@ -282,39 +282,66 @@ function postMessage(botResponse) {
   botReq.end(JSON.stringify(body));
 }
 
+// W I P
 function directMessage(userID, text) {
   var botResponse, options, body, botReq;
   options = {
     hostname: 'api.groupme.com',
-    path: '/v3/bots/post',
-    method: 'POST'
+    path: '/v3/direct_messages',
+    method: 'POST',
+    X-Access-Token: "vVdZWaS7b1N0p4oJ1EowZozkONo0hlZ7ZsAnTuXO"
   };
 
   body = {
   "direct_message": {
     "source_guid": "GUID",
-    "recipient_id": userID,
-    "text": text,
+    "recipient_id": adminID,
+    "text": text
     }
   }
 
   console.log('Sending: \'' + text + '\' to ' + userID + "...");
-  console.log(body);
+
   botReq = HTTPS.request(options, function(res) {
     if (res.statusCode == 202) {
-      console.log('Response code: ' + res.statusCode);
+      console.log('DM Response code: ' + res.statusCode);
     } else {
-      console.log('Response code: ' + res.statusCode);
+      console.log('DM Response code: ' + res.statusCode);
     }
   });
 
   botReq.on('error', function(err) {
-    console.log('Error posting message ' + JSON.stringify(err));
+    console.log('Error posting DM ' + JSON.stringify(err));
   });
   botReq.on('timeout', function(err) {
-    console.log('Timeout posting message ' + JSON.stringify(err));
+    console.log('Timeout posting DM ' + JSON.stringify(err));
   });
   botReq.end(JSON.stringify(body));
 }
 
+function spontanious() {
+  console.log(e + "spontanious");
+
+  var time = moment();
+
+  if (time.day() == 5 || time.day() == 6) {
+    //TODO: weekend prompt
+  } else {
+    //TODO: weekday prompt
+  }
+
+  //random interval from 50 - 250 hours (~2-10 days)
+  var interval = Math.floor(Math.random() * 200) + 50;
+
+  console.log("Scheduling next spontanious post in " + interval + " hours.\n");
+  time.add(interval, 'hours');
+
+  var job = new cron(time.toDate(), function() {
+  }, function() {
+    spontanious();
+  }, true, 'America/Chicago');
+}
+
 exports.respond = parseResponse;
+
+exports.spontanious = spontanious;
