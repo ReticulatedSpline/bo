@@ -282,7 +282,7 @@ function postMessage(botResponse) {
   botReq.end(JSON.stringify(body));
 }
 
-// W I P
+/** W I P
 function directMessage(userID, text) {
   var botResponse, options, body, botReq;
   options = {
@@ -318,6 +318,7 @@ function directMessage(userID, text) {
   });
   botReq.end(JSON.stringify(body));
 }
+**/
 
 function spontanious() {
   console.log(e + "spontanious");
