@@ -10,7 +10,7 @@ const fs = require('fs');
 const adminID = "32906498";
 //moment.js timezone offset
 const tZone = 5;
-const botID = "1e66479fa9f0d44a5d875e5e25";
+const botID = "11b58c36c19abfa690d9e0c121";
 const sourceLink = "https://github.com/ReticulatedSpline/Groupme-Chatbot";
 const responses = ["It is certain.",
                  "It is decidedly so.",
@@ -343,5 +343,4 @@ function spontanious() {
 }
 
 exports.respond = parseResponse;
-
 exports.spontanious = spontanious;
