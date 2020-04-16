@@ -1,6 +1,4 @@
-# Groupme Chatbot
-
-## Introduction
+## Bo
 
 Groupme recently released a chatbot called 'Zo', and it isn't very useful. I've decided to make my own with a fresh and creative name.
 
