@@ -4,7 +4,7 @@ Groupme recently released a chatbot called 'Zo', and it isn't very useful. I've 
 
 ## Technical
 
-Bo is build with [Node.js](https://nodejs.org/en/about/), a [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/1.8.5) server-side runtime. The setup is similar to the documentation on GroupMe's [development site.](https://dev.groupme.com/tutorials/bots) The bot is deployed on a cloud platform called [Heroku.](https://devcenter.heroku.com/)
+Bo is built on [Node.js](https://nodejs.org/en/about/), a [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/1.8.5) server-side runtime. The setup is similar to the documentation on GroupMe's [development site.](https://dev.groupme.com/tutorials/bots) The bot is deployed on a cloud platform called [Heroku.](https://devcenter.heroku.com/)
 
 ## Accepted Queries
 
