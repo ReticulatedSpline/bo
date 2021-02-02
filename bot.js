@@ -6,43 +6,13 @@ var cron = require('cron').CronJob;
 var moment = require('moment');
 const catfact = require('cat-facts');
 const fs = require('fs');
+shitposts   = require('./shitposts.js')
+eightball   = require('./eightball.js')
+
 //groupme ID to PM
 const adminID = "32906498";
-//moment.js timezone offset
-const tZone = 5;
-const botID = "11b58c36c19abfa690d9e0c121";
+const botID = "cd3299b98f2143984d6f16e649";
 const sourceLink = "https://github.com/ReticulatedSpline/Groupme-Chatbot";
-const eightball = ["It is certain.",
-                 "It is decidedly so.",
-                 "Without a doubt.",
-                 "It will definitely happen.",
-                 "You may rely on it.",
-                 "As I see it, yes.",
-                 "Most likely.",
-                 "Outlook good.",
-                 "100% Chance.",
-                 "Signs point to yes.",
-                 "Outlook hazy, try again.",
-                 "Ask again later.",
-                 "Cannot predict now.",
-                 "Concentrate and ask again.",
-                 "Don't count on it.",
-                 "My reply is not likely.",
-                 "My sources say no.",
-                 "Outlook not good.",
-                 "Very doubtful."]
-const shitposts = ["( ͡° ͜ʖ ͡°)",
-                "从丫 𠘨卂从乇 丁乇下下",
-                "Don't👏 pretend👏 to 👏be 👏entitled👏 to👏 financial👏 compensation👏 if 👏you 👏or👏 a👏 loved 👏one 👏hasn't👏 even 👏been 👏diagnosed👏 with 👏mesothelioma ",
-                "If my girl👧😍 and my fidget spinners 💯🔥 are both drowning🌊😦 and I could only save one😄☝️️ you can Catch me letting it spin at my girls funeral😅👻💀 Cause it's fidget spinner or catch a fade my ",
-                "What if the haters dab back?",
-                "I identify as a ＬＡ̕͏͜Ｍ̴̨̀͠Ｂ̨͘͟͝͝Ｏ̴͟͢͠ＲＧＨＩＮＩ. Ever since I was a boy I dreamed of ＤＲＩＶing ＵＰ ＨＥＲＥ ＩＮ ＴＨＥ ＨＯＬＬＹＷＯＯＤ ＨＩＬＬＳ. People say to me that a person being a ＬＡＭＢＯＲＧＨＩＮＩ is Impossible and I’m ﻿ＭＡＴＥＲＩＡＬＩＳＴＩＣ but I don’t care, I’m this ﻿ＮＥＷ  ＬＡＭＢＯＲＧ̡͏͏Ｈ̡͢Ｉ̨͡ＮＩ  ＨＥＲＥ. I’m having a plastic surgeon install , 7 ＮＥＷ bookshelves and ﻿２０００  ｎｅｗ  ｂｏｏｋｓ on my body. From now on I want you guys to call me “ＮＥＷ  ＬＡＭＢＯＲＧＨＩＮＩ  ＨＥＲＥ” and respect my right to ＤＲＩＶＥ ＵＰ ＨＥＲＥ ＩＮ ＴＨＥ ＨＯＬＬＹＷＯＯＤ ＨＩＬＬＳ. If you can’t accept me you’re a ＬＡＭＢＯphobe and need to check your ﻿̡ＧＮＡ͏ＷＬ͞Ｉ̛ＤＧＥ. Thank you, and I'll see you on my website.",
-                "The waiter says \"Say When\", grating the parmesan cheese over my pizza. Foolish mistake. Anyone should know that there is no \"when\". As parmesan fills the restaurant, the pizza only gets better. After only an hour, the restaurants interior its completely filled with parmesan, killing twenty. But the resuraunt is only the beginning. Next the USA will be taken by parmesan, a force stronger than anyone could have anticipated. After that comes the world. Consider this a warning, to get to a foreign planet immediately. At least that will provide temporary safety, until the parmesan rises to mars. At that point, there will be enough cheese on my pizza, and I will be ready to eat.",
-                "ᶦ ˢʷᵉᵃʳ ᵗᵒ ᵍᵒᵈ ᶦᶠ ᵃᶰʸ ᵒᶠ ʸᵒᵘ HOOLIGANS ᶜᵒᵖʸ ᵃᶰᵈ ᵖᵃˢᵗᵉ ᵗʰᶦˢ ʸᵒᵘ ʷᶦᶫᶫ ᵇᵉ ᶦᶰ ˢᵉʳᶦᵒᵘˢ ᵗʳᵒᵘᵇᶫᵉ",
-                "It's 4️⃣2️⃣0️⃣today😳😱but I'm not smoking weed 🌿🍁😴😏🚬I'm smoking💨😜the Bible😇😋🙏🏼📕because heaven⬆️😍👐🏼😂is the highest you can get🙌🏼😤",
-                "߷ who spinning rn ߷",
-                "🤔 If Ratatouille🐭🍝😻 & my girl👸😍🌊 both drowning😱💦😬 and I can only save one😤👼 catch me at the funeral😔🌹🍝 w/ a tasty fettuccine alfredo😜👊",
-                "👁( ͜ʖ )👁"]
 
 var e = "Trigger detected: ";
 
@@ -54,7 +24,6 @@ function parseResponse() {
   if (request.text &&
     botRegex.test(request.text) &&
     request.sender_type != "bot") {
-    var botResponse = "Something went wrong!";
 
     switch (true) {
       case (/source/i.test(request.text)):
