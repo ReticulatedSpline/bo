@@ -16,7 +16,7 @@ Then, append any of the following words to your query and it will attempt to com
 
 `flip a coin`: Heads or tails.
 
-`source`: See me nude on github.
+`source`: See source on github.
 
 `number between from <x> <y>`: Random int of domain [x, y].
 
