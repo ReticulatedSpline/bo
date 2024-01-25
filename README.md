@@ -1,6 +1,6 @@
 ## Bo
 
-A now-defunt reflexive chatbot for GroupMe.
+A now-defunct reflexive chatbot for GroupMe.
 
 ## Technical
 
