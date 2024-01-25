@@ -1,10 +1,10 @@
 ## Bo
 
-Groupme recently released a chatbot called 'Zo', and it isn't very useful. I've decided to make my own with a fresh and creative name.
+A now-defunt reflexive chatbot for GroupMe.
 
 ## Technical
 
-Bo is built on [Node.js](https://nodejs.org/en/about/), a [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/1.8.5) server-side runtime. The setup is similar to the documentation on GroupMe's [development site.](https://dev.groupme.com/tutorials/bots) The bot is deployed on a cloud platform called [Heroku.](https://devcenter.heroku.com/)
+Bo is built on [Node.js](https://nodejs.org/en/about/), a [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/1.8.5) server-side runtime. The setup is similar to the documentation on GroupMe's [development site.](https://dev.groupme.com/tutorials/bots) The bot was deployed on a cloud platform called [Heroku.](https://devcenter.heroku.com/)
 
 ## Accepted Queries
 
@@ -30,4 +30,4 @@ Then, append any of the following words to your query and it will attempt to com
 
 ## Deployment
 
-Bo is deployed to Heroku [here,](https://groupme-ratbot.herokuapp.com/) but to really interact you'd have to be in a GroupMe chat!
+Bo was deployed to Heroku [here,](https://groupme-ratbot.herokuapp.com/) but to really interact you'd have to be in a GroupMe chat!
